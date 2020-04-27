@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
   TextInput,
   StyleSheet,
@@ -6,29 +6,26 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
+import { SearchActiveIcon, CloseSearchIcon } from './IconsSet'
 import { scale } from '../../utils/common'
 import { Colors } from '../../utils/Colors'
 
-export default class SearchBox extends Component {
+export default class SearchBox extends PureComponent {
+
   render() {
+    const { setSearchInputValue, searchValue, toggleSearch } = this.props
     return (
       <View style={styles.searchContainer}>
-        <Image
-          source={require('../../assets/icons/search_active_icon.png')}
-          style={styles.icon}
-        />
+        <SearchActiveIcon />
         <TextInput
           style={styles.searchInput}
-          onChangeText={text => this.props.setSearchInputValue(text)}
+          onChangeText={text => setSearchInputValue(text)}
           placeholderTextColor={Colors.grey8A}
-          value={this.props.searchValue}
+          value={searchValue}
           placeholder={'Search...'}
         />
-        <TouchableOpacity onPress={this.props.toggleSearch}>
-          <Image
-            source={require('../../assets/icons/close_icon.png')}
-            style={styles.icon}
-          />
+        <TouchableOpacity onPress={toggleSearch}>
+          <CloseSearchIcon />
         </TouchableOpacity>
       </View>
     )
@@ -62,9 +59,5 @@ const styles = StyleSheet.create({
     width: '90%',
     paddingHorizontal: scale(10),
     fontSize: scale(16)
-  },
-  icon: {
-    width: scale(16),
-    height: scale(16),
   },
 })

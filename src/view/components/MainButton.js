@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import {
   Text,
   StyleSheet,
-  View,
   TouchableOpacity,
 } from 'react-native'
 import { scale } from '../../utils/common'
@@ -18,10 +17,7 @@ export default class MainButton extends PureComponent {
     } = this.props
 
     return (
-      <TouchableOpacity
-        style={[styles.container, { width: width }]}
-        onPress={onPress}
-      >
+      <TouchableOpacity style={[styles.container, { width: width }]} onPress={onPress}>
         <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
     )

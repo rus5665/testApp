@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
   Text,
   StyleSheet,
@@ -7,9 +7,10 @@ import {
 import moment from 'moment'
 import { scale } from '../../utils/common'
 import { Colors } from '../../utils/Colors'
+import { Statuses } from '../../utils/Statuses'
 
-export default class StatusLine extends Component {
 
+export default class StatusLine extends PureComponent {
 
   getDate = (date) => {
     date = new Date(date * 1000)
@@ -19,7 +20,7 @@ export default class StatusLine extends Component {
 
   getLeftTime = () => {
     let leftTimeText = ''
-    let { dateFrom, dateTo } = this.props
+    let { dateTo } = this.props
 
     let timeNow = Date.now() / 1000
     let delta = Math.abs(dateTo - timeNow)
@@ -56,23 +57,18 @@ export default class StatusLine extends Component {
   }
 
   getFinishedTime = () => {
-    const { finished } = this.props
-    let finishedTimeText = `finished on ${this.getDate(finished)}`
-    return finishedTimeText
+    return `finished on ${this.getDate(this.props.finished)}`
   }
 
   getStatusTime = (status) => {
-    if (status === 'Active') {
-      let text = this.getLeftTime()
-      return text
+    if (status === Statuses.active) {
+      return this.getLeftTime()
     }
-    if (status === 'On hold') {
-      let text = this.getHoldTime()
-      return text
+    if (status === Statuses.onHold) {
+      return this.getHoldTime()
     }
-    if (status === 'Finished') {
-      let text = this.getFinishedTime()
-      return text
+    if (status === Statuses.finished) {
+      return this.getFinishedTime()
     }
   }
 
@@ -97,7 +93,7 @@ export default class StatusLine extends Component {
 
     function statusColor() {
       return (
-        status === 'Active' || status === 'Finished'
+        status === Statuses.active || status === Statuses.finished
           ? Colors.blueDC
           : Colors.orange42
       )
@@ -105,7 +101,7 @@ export default class StatusLine extends Component {
 
     function deadlineStyle() {
       return (
-        status === 'Active' || status === 'Finished'
+        status === Statuses.active || status === Statuses.finished
           ? styles.date
           : styles.deadlineOnHold
       )
@@ -138,9 +134,6 @@ export default class StatusLine extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-
-  },
   topInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',

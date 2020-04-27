@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
-  Image,
   StyleSheet,
   View,
   TouchableOpacity,
 } from 'react-native'
+import FastImage from "react-native-fast-image"
 import { scale } from '../../utils/common'
 import { Colors } from '../../utils/Colors'
+import { NotificationIcon } from './IconsSet'
 
-export default class Headers extends Component {
+export default class Headers extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
@@ -17,14 +18,11 @@ export default class Headers extends Component {
           <View style={styles.burgerItem} />
           <View style={styles.burgerItem} />
         </TouchableOpacity>
-        <Image
+        <FastImage
           style={styles.logo}
           source={require('../../assets/img/logo.png')}
         />
-        <Image
-          style={styles.ring}
-          source={require('../../assets/icons/notification.png')}
-        />
+        <NotificationIcon />
       </View>
     )
   }
@@ -38,9 +36,6 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: scale(20),
     backgroundColor: Colors.white,
-  },
-  menu: {
-
   },
   logo: {
     width: scale(126),

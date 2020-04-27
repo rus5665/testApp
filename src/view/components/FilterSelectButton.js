@@ -7,14 +7,7 @@ import {
 import { scale } from '../../utils/common'
 import { Colors } from '../../utils/Colors'
 
-export default class FilterButton extends PureComponent {
-
-
-  setActive = () => {
-    this.setState({
-      isActive: !this.props.active
-    })
-  }
+export default class FilterSelectButton extends PureComponent {
 
   setBgColor() {
     return (
@@ -33,7 +26,7 @@ export default class FilterButton extends PureComponent {
   }
 
   render() {
-    const { active, title, onPress = this.setActive } = this.props
+    const { title, onPress } = this.props
     return (
       <TouchableOpacity
         style={[styles.container, { backgroundColor: this.setBgColor() }]}

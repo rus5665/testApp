@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
   Text,
   StyleSheet,
@@ -8,36 +8,11 @@ import {
 } from 'react-native'
 import { scale } from '../../utils/common'
 import { Colors } from '../../utils/Colors'
+import { AddressIcon } from './IconsSet'
 import StatusLine from '../components/StatusLine'
+import StatusBox from '../components/StatusBox'
 
-
-export default class ProjectListItem extends Component {
-
-  getStatusBgColor() {
-    const status = this.props.item.item.status
-    return (
-      status === 'Active'
-        ? Colors.blueStatusOpacity
-        : status === 'On hold'
-          ? Colors.orangeStatusOpacity
-          : status === 'Finished'
-            ? Colors.greenStatusOpacity
-            : Colors.greyD4
-    )
-  }
-
-  getStatusTextColor() {
-    const status = this.props.item.item.status
-    return (
-      status === 'Active'
-        ? Colors.blueB5
-        : status === 'On hold'
-          ? Colors.orange42
-          : status === 'Finished'
-            ? Colors.green3C
-            : Colors.greyD4
-    )
-  }
+export default class ProjectListItem extends PureComponent {
 
   render() {
     const {
@@ -81,10 +56,7 @@ export default class ProjectListItem extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.addressContainer}>
-          <Image
-            source={require('../../assets/icons/location.png')}
-            style={styles.addressIcon}
-          />
+          <AddressIcon />
           <Text style={styles.addressText}>{address}</Text>
         </View>
         <View style={styles.nameEmplStatusContainer}>
@@ -95,9 +67,7 @@ export default class ProjectListItem extends Component {
               <Text style={styles.employeesText}> Employees</Text>
             </View>
           </View>
-          <View style={[styles.statusContainer, { backgroundColor: this.getStatusBgColor() }]}>
-            <Text style={[styles.statusText, { color: this.getStatusTextColor() }]}>{status}</Text>
-          </View>
+          <StatusBox status={status} />
         </View>
         <StatusLine
           status={status}
@@ -183,11 +153,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: scale(15),
   },
-  addressIcon: {
-    width: scale(11),
-    height: scale(13),
-    marginRight: scale(7),
-  },
   addressText: {
     color: Colors.greyD4,
     fontSize: scale(12),
@@ -198,7 +163,6 @@ const styles = StyleSheet.create({
     paddingTop: scale(7),
     paddingBottom: scale(21)
   },
-
   nameText: {
     color: Colors.black35,
     fontSize: scale(14),
@@ -216,18 +180,6 @@ const styles = StyleSheet.create({
     color: Colors.greyD4,
     fontSize: scale(12),
     fontWeight: 'bold',
-  },
-  statusContainer: {
-    backgroundColor: Colors.blueF5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: scale(8),
-    paddingVertical: scale(8),
-    paddingHorizontal: scale(19),
-  },
-  statusText: {
-    color: Colors.blueB5,
-    fontSize: scale(12),
   },
   dotsMenuContainer: {
     height: scale(21),

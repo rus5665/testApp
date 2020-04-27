@@ -12,6 +12,7 @@ import ProjectListItem from '../components/ProjectListItem'
 import SearchAndFilter from '../components/SearchAndFilter'
 import FilterModal from '../components/FilterModal'
 import Headers from '../components/Headers'
+import { Statuses } from '../../utils/Statuses'
 
 export default class ProjectsList extends Component {
 
@@ -27,7 +28,6 @@ export default class ProjectsList extends Component {
   async componentDidMount() {
     let response = await Service.getProjectsData()
     let data = response.data
-    console.log('data', data)
     this.setState({
       data: data,
       dataSearch: data,
@@ -47,20 +47,11 @@ export default class ProjectsList extends Component {
       }
       return {}
     }
-
   }
 
-  openFilterModal = () => {
-    this.setState({
-      filterIsOpen: true
-    })
-  }
+  openFilterModal = () => this.setState({ filterIsOpen: true })
 
-  closeFilterModal = () => {
-    this.setState({
-      filterIsOpen: false
-    })
-  }
+  closeFilterModal = () => this.setState({ filterIsOpen: false })
 
   filterModal = () => {
     return <FilterModal
@@ -89,9 +80,7 @@ export default class ProjectsList extends Component {
   }
 
   dataRenderItem = (item) => {
-    return (
-      <ProjectListItem item={item} />
-    )
+    return <ProjectListItem item={item} />
   }
 
   applyFilter = (filterButtons) => {
@@ -103,15 +92,15 @@ export default class ProjectsList extends Component {
 
     if (filterButtons.activeButton) {
       defaultData = []
-      active = dataSearch.filter(item => item.status.includes('Active'))
+      active = dataSearch.filter(item => item.status.includes(Statuses.active))
     }
     if (filterButtons.onHoldButton) {
       defaultData = []
-      onHold = dataSearch.filter(item => item.status.includes('On hold'))
+      onHold = dataSearch.filter(item => item.status.includes(Statuses.onHold))
     }
     if (filterButtons.finishedButton) {
       defaultData = []
-      finished = dataSearch.filter(item => item.status.includes('Finished'))
+      finished = dataSearch.filter(item => item.status.includes(Statuses.finished))
     }
     if (filterButtons.allButton) {
       this.setState({
@@ -156,15 +145,11 @@ export default class ProjectsList extends Component {
       })
     }
     if (filterButtons.deadlineDESC) {
-      console.log('filteredData', filteredData)
-
       filteredData.sort(function (a, b) {
         return a.deadline - b.deadline
       })
     }
     if (filterButtons.deadlineASC) {
-      console.log('filteredData', filteredData)
-
       filteredData.sort(function (a, b) {
         return b.deadline - a.deadline
       })
@@ -181,20 +166,20 @@ export default class ProjectsList extends Component {
   async onRefresh() {
     await this.setState({ isFetching: true })
     let response = await this.getApiData()
-    console.log('response', response)
-    this.setState({ filteredData: response })
-    this.setState({ isFetching: false })
+    this.setState({
+      filteredData: response,
+      isFetching: false
+    })
   }
 
   render() {
-    let { filterIsOpen, filteredData } = this.state
-    console.log('this.state', this.state)
+    let { filterIsOpen, filteredData, isFetching } = this.state
     return (
       <View style={styles.container} >
         <Headers />
         <FlatList
           onRefresh={() => this.onRefresh()}
-          refreshing={this.state.isFetching}
+          refreshing={isFetching}
           ListHeaderComponent={this.searchFilterComponent}
           data={filteredData}
           renderItem={item => this.dataRenderItem(item)}
